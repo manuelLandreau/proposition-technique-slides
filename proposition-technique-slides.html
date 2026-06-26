@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposition technique — Plateforme unifiée Erudia</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14152A; --ink-soft:#3A3D5C; --muted:#74789A; --line:#E7E8F2;
+    --bg:#FFFFFF; --bg-alt:#F7F8FC;
+    --accent:#4F46E5; --accent-soft:#EEF0FE; --accent2:#7C3AED;
+    --emerald:#0EA47A; --emerald-soft:#E3F6EF;
+    --amber:#C77816; --amber-soft:#FBF0DD;
+    --coral:#E0485B; --coral-soft:#FCE9EC;
+  }
+  .reveal{ font-family:'Inter',system-ui,sans-serif; font-size:24px; color:var(--ink); font-weight:400; -webkit-font-smoothing:antialiased; }
+  .reveal .slides{ text-align:left; }
+  .reveal .slides section{ padding:42px 64px; box-sizing:border-box; }
+  .reveal h1,.reveal h2,.reveal h3{ font-family:'Inter',sans-serif; color:var(--ink); text-transform:none; letter-spacing:-0.02em; margin:0; line-height:1.12; }
+  .reveal h2{ font-size:40px; font-weight:800; }
+  .reveal p{ margin:0; line-height:1.45; }
+  .reveal strong{ color:var(--ink); font-weight:700; }
+  .reveal em{ color:var(--accent); font-style:normal; font-weight:600; }
+  .reveal .slide-number{
+    font-family:'Inter',sans-serif; font-size:12px; font-weight:700; letter-spacing:.04em;
+    color:#fff; background:var(--accent);
+    top:18px; left:22px; right:auto; bottom:auto;
+    padding:4px 11px; border-radius:999px;
+    box-shadow:0 2px 10px -3px rgba(79,70,229,.55);
+  }
+  .reveal .slide-number a{ color:#fff; text-decoration:none; }
+  .reveal .progress{ color:var(--accent); height:4px; }
+  .reveal .controls{ color:var(--accent); }
+
+  /* Header */
+  .kicker{ display:flex; align-items:center; gap:10px; font-size:14px; font-weight:600; color:var(--muted); letter-spacing:.04em; margin-bottom:14px; text-transform:uppercase; }
+  .kicker .brand{ color:var(--accent); }
+  .kicker .dot{ width:4px; height:4px; border-radius:50%; background:var(--line); }
+  .lead{ font-size:21px; color:var(--ink-soft); margin-top:12px; max-width:1000px; line-height:1.5; }
+  .h-rule{ height:3px; width:54px; background:var(--accent); border-radius:3px; margin:16px 0 22px; }
+
+  /* Title slide */
+  .title-wrap{ }
+  .title-eyebrow{ font-size:15px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:#A9ADD6; margin-bottom:26px; }
+  .title-wrap h1{ font-size:62px; font-weight:800; color:#fff; line-height:1.05; max-width:1040px; }
+  .title-wrap h1 .accent{ color:#A5A0FF; }
+  .title-sub{ font-size:23px; color:#C9CBE8; margin-top:24px; max-width:840px; line-height:1.5; }
+  .title-meta{ display:flex; gap:40px; margin-top:54px; }
+  .title-meta div{ border-left:2px solid rgba(165,160,255,.4); padding-left:16px; }
+  .title-meta .tm-k{ font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:#8E92C4; margin-bottom:4px; }
+  .title-meta .tm-v{ font-size:17px; color:#EDEEF8; font-weight:600; }
+  .title-badge{ position:absolute; top:46px; right:64px; font-size:14px; font-weight:700; letter-spacing:.04em; color:#A5A0FF; border:1px solid rgba(165,160,255,.35); border-radius:999px; padding:7px 16px; }
+
+  /* Generic blocks */
+  .grid{ display:grid; gap:16px; }
+  .g2{ grid-template-columns:repeat(2,1fr); } .g3{ grid-template-columns:repeat(3,1fr); }
+  .g4{ grid-template-columns:repeat(4,1fr); } .g5{ grid-template-columns:repeat(5,1fr); }
+  .card{ background:var(--bg-alt); border:1px solid var(--line); border-radius:14px; padding:18px 20px; }
+  .card h3{ font-size:18px; font-weight:700; margin-bottom:7px; }
+  .card p{ font-size:15.5px; color:var(--ink-soft); line-height:1.4; }
+  .card .tag{ font-size:12px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); margin-bottom:9px; }
+  .card.accent{ border-left:4px solid var(--accent); }
+  .num{ font-variant-numeric:tabular-nums; }
+
+  ul.clean{ list-style:none; margin:0; padding:0; }
+  ul.clean li{ position:relative; padding-left:26px; margin-bottom:13px; font-size:19px; color:var(--ink-soft); line-height:1.4; }
+  ul.clean li::before{ content:""; position:absolute; left:2px; top:9px; width:9px; height:9px; border-radius:3px; background:var(--accent); }
+
+  .pill{ display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px; font-size:14.5px; font-weight:600; background:var(--accent-soft); color:var(--accent); border:1px solid #DCDEFB; }
+
+  table.t{ width:100%; border-collapse:collapse; font-size:16px; }
+  table.t th{ text-align:left; font-weight:700; color:var(--muted); font-size:13px; text-transform:uppercase; letter-spacing:.04em; padding:0 14px 10px; border-bottom:2px solid var(--line); }
+  table.t td{ padding:12px 14px; border-bottom:1px solid var(--line); color:var(--ink-soft); vertical-align:top; }
+  table.t td strong{ color:var(--ink); }
+  .chip{ display:inline-block; padding:3px 10px; border-radius:7px; font-size:13px; font-weight:700; }
+  .chip.n3{ background:var(--accent-soft); color:var(--accent); }
+  .chip.n2{ background:#E6F7F1; color:var(--emerald); }
+  .chip.n1{ background:var(--amber-soft); color:var(--amber); }
+
+  /* Architecture diagram */
+  .arch{ display:flex; flex-direction:column; gap:11px; margin-top:6px; }
+  .arch-tier{ display:flex; gap:12px; align-items:stretch; justify-content:center; }
+  .box{ background:#fff; border:1.5px solid var(--line); border-radius:12px; padding:13px 18px; text-align:center; box-shadow:0 1px 2px rgba(20,21,42,.04); }
+  .box .bx-t{ font-size:17px; font-weight:700; }
+  .box .bx-s{ font-size:13px; color:var(--muted); margin-top:2px; }
+  .box.client{ flex:1; max-width:330px; border-color:#D7D9F4; }
+  .box.api{ width:100%; max-width:880px; border:1.5px solid var(--accent); background:var(--accent-soft); }
+  .box.api .bx-t{ color:var(--accent); }
+  .box.db{ border:2px solid var(--emerald); background:var(--emerald-soft); min-width:300px; }
+  .box.db .bx-t{ color:var(--emerald); }
+  .box.svc{ background:var(--bg-alt); min-width:210px; }
+  .box.conn{ flex:1; background:var(--bg-alt); padding:11px 8px; }
+  .box.conn .bx-t{ font-size:15px; }
+  .arch-flow{ text-align:center; color:var(--muted); font-size:13px; font-weight:600; letter-spacing:.03em; }
+  .arch-note{ text-align:center; font-size:14px; color:var(--ink-soft); margin-top:4px; }
+  .arch-note b{ color:var(--accent2); }
+
+  /* Stairs N1/N2/N3 */
+  .stairs{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; align-items:end; margin:8px 0 18px; }
+  .stair{ border-radius:14px; padding:18px; color:#fff; }
+  .stair.s1{ background:linear-gradient(160deg,#E0A33C,#C77816); height:150px; }
+  .stair.s2{ background:linear-gradient(160deg,#1FB98C,#0EA47A); height:185px; }
+  .stair.s3{ background:linear-gradient(160deg,#6D63F0,#4F46E5); height:220px; }
+  .stair .st-lv{ font-size:13px; font-weight:700; letter-spacing:.08em; opacity:.85; }
+  .stair .st-t{ font-size:20px; font-weight:800; margin:4px 0 8px; }
+  .stair .st-d{ font-size:14.5px; line-height:1.4; opacity:.96; }
+
+  /* Cost chart */
+  .costchart{ margin-top:10px; }
+  .cc-cap{ font-size:15px; font-weight:700; margin:14px 0 7px; display:flex; justify-content:space-between; }
+  .cc-cap .v{ color:var(--accent); }
+  .cc-plot{ position:relative; }
+  .cc-track{ position:relative; height:42px; background:var(--bg-alt); border:1px solid var(--line); border-radius:9px; overflow:hidden; }
+  .cc-bar{ position:absolute; top:0; bottom:0; border-radius:8px; display:flex; align-items:center; justify-content:flex-end; padding-right:12px; color:#fff; font-weight:700; font-size:15px; }
+  .cc-bar.core{ background:linear-gradient(90deg,#6D63F0,#4F46E5); }
+  .cc-bar.full{ background:linear-gradient(90deg,#9B7CF0,#7C3AED); }
+  .cc-band{ position:absolute; top:-6px; bottom:-6px; background:rgba(14,164,122,.10); border-left:2px dashed var(--emerald); border-right:2px dashed var(--emerald); z-index:0; }
+  .cc-band span{ position:absolute; top:-26px; left:50%; transform:translateX(-50%); white-space:nowrap; font-size:13px; font-weight:700; color:var(--emerald); }
+  .cc-rows{ position:relative; display:flex; flex-direction:column; gap:30px; padding-top:28px; }
+  .cc-row{ position:relative; z-index:1; }
+  .cc-axis{ position:relative; height:20px; margin-top:12px; border-top:1px solid var(--line); }
+  .cc-axis span{ position:absolute; top:5px; transform:translateX(-50%); font-size:12.5px; color:var(--muted); font-variant-numeric:tabular-nums; }
+
+  /* Roadmap */
+  .road{ margin-top:16px; }
+  .rrow{ display:grid; grid-template-columns:160px repeat(7,1fr); align-items:center; margin-bottom:13px; }
+  .rhead > div{ font-size:13px; font-weight:700; color:var(--muted); text-align:center; text-transform:uppercase; letter-spacing:.03em; padding-bottom:7px; border-bottom:2px solid var(--line); }
+  .rhead > div:first-child{ border:none; }
+  .rlbl{ font-size:14.5px; font-weight:700; color:var(--ink); padding-right:10px; }
+  .rlbl small{ display:block; font-weight:500; color:var(--muted); font-size:12px; }
+  .bar{ height:30px; border-radius:8px; display:flex; align-items:center; padding:0 12px; font-size:13.5px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; }
+  .bar.amber{ background:linear-gradient(90deg,#E0A33C,#C77816); }
+  .bar.core{ background:linear-gradient(90deg,#6D63F0,#4F46E5); }
+  .bar.opt{ background:#C9CCEC; color:#4A4E7A; }
+  .bar.mig{ background:linear-gradient(90deg,#1FB98C,#0EA47A); }
+  .ms{ display:flex; flex-direction:column; align-items:center; gap:3px; }
+  .ms .di{ width:13px; height:13px; background:var(--coral); transform:rotate(45deg); border-radius:2px; }
+  .ms small{ font-size:11.5px; font-weight:700; color:var(--coral); white-space:nowrap; }
+  .road-note{ font-size:13.5px; color:var(--muted); margin-top:16px; }
+
+  .foot-note{ font-size:13.5px; color:var(--muted); margin-top:16px; line-height:1.4; }
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .callout{ background:var(--amber-soft); border-left:4px solid var(--amber); border-radius:10px; padding:14px 18px; font-size:16px; color:#7a4d10; line-height:1.45; }
+  .callout.ok{ background:var(--emerald-soft); border-color:var(--emerald); color:#0a5c43; }
+  .callout.idx{ background:var(--accent-soft); border-color:var(--accent); color:#33308f; }
+
+  /* — additions v2 (slides 6+) — */
+  .mono{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; background:#14152A; color:#A5A0FF; border-radius:6px; padding:3px 8px; display:inline-block; line-height:1.55; }
+  .apirail{ display:flex; align-items:stretch; margin-top:26px; }
+  .apistep{ flex:1; background:var(--bg-alt); border:1px solid var(--line); border-radius:14px; padding:16px 16px 18px; position:relative; }
+  .apistep + .apistep{ margin-left:34px; }
+  .apistep + .apistep::before{ content:"→"; position:absolute; left:-29px; top:46px; color:var(--accent); font-weight:800; font-size:23px; }
+  .apistep .as-n{ font-size:11.5px; font-weight:800; color:var(--accent); letter-spacing:.07em; text-transform:uppercase; }
+  .apistep .as-t{ font-size:17px; font-weight:700; margin:6px 0 6px; }
+  .apistep .as-d{ font-size:13px; color:var(--ink-soft); line-height:1.42; margin-bottom:12px; min-height:74px; }
+  .kv2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:4px; }
+  .kvp{ border-radius:14px; padding:16px 20px 18px; }
+  .kvp h3{ font-size:16px; font-weight:800; margin-bottom:13px; }
+  .kvp.known{ background:var(--emerald-soft); border:1px solid #BCE7D6; }
+  .kvp.known h3{ color:#0a6a4d; }
+  .kvp.unknown{ background:var(--amber-soft); border:1px solid #EFD9AE; }
+  .kvp.unknown h3{ color:#8a5512; }
+  .kvp ul{ list-style:none; margin:0; padding:0; }
+  .kvp li{ position:relative; padding-left:24px; margin-bottom:11px; font-size:15px; line-height:1.4; color:var(--ink-soft); }
+  .kvp li:last-child{ margin-bottom:0; }
+  .kvp.known li::before{ content:"✓"; position:absolute; left:0; top:0; color:var(--emerald); font-weight:800; }
+  .kvp.unknown li::before{ content:"?"; position:absolute; left:2px; top:-1px; color:var(--amber); font-weight:800; }
+  .card.opt{ border-style:dashed; background:#fff; }
+  .card.opt .tag{ color:var(--muted); }
+  .lots-legend{ display:flex; gap:18px; font-size:13.5px; color:var(--muted); margin-top:14px; align-items:center; }
+  .lots-legend b{ color:var(--ink); }
+  .swatch{ display:inline-block; width:12px; height:12px; border-radius:3px; vertical-align:-1px; margin-right:6px; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- 1 · TITRE -->
+<section data-background-color="#14152A">
+  <div class="title-wrap">
+    <div class="title-eyebrow">theTribe × Erudia — Juin 2026</div>
+    <h1>Proposition technique<br><span class="accent">Plateforme unifiée Erudia</span></h1>
+    <p class="title-sub">Mise en œuvre de la cible : <strong style="color:#fff">comment</strong>, en <strong style="color:#fff">combien de temps</strong>, à <strong style="color:#fff">quel coût</strong>.</p>
+    <div class="title-meta">
+      <div><div class="tm-k">Périmètre</div><div class="tm-v">Espace connecté</div></div>
+      <div><div class="tm-k">Enveloppe</div><div class="tm-v">50–90 k€</div></div>
+      <div><div class="tm-k">Mises en service</div><div class="tm-v">Oct.–déc. 2026</div></div>
+      <div><div class="tm-k">Remise finale</div><div class="tm-v">10 juillet</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · LE BESOIN -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>02 — Le besoin</span></div>
+  <h2>Le constat, en bref</h2>
+  <div class="h-rule"></div>
+  <div class="grid g4" style="margin-bottom:24px;">
+    <div class="card"><div class="tag" style="color:var(--coral)">Fragmentation</div><p>4–5 plateformes, identifiants multiples, parcours dispersés</p></div>
+    <div class="card"><div class="tag" style="color:var(--coral)">Tout manuel</div><p>Comptes 24x7 et crédits à la main, 40 % des commandes hors boutique</p></div>
+    <div class="card"><div class="tag" style="color:var(--coral)">Pas de base</div><p>Donnée enfermée dans chaque outil, aucun pilotage central</p></div>
+    <div class="card"><div class="tag" style="color:var(--coral)">Conformité</div><p>Exigences RGPD des grands comptes, identifiants envoyés en clair</p></div>
+  </div>
+  <div class="callout idx"><strong>La cible :</strong> un point d'entrée unique — une identité, une page d'accueil personnalisée — adossé à une <strong>base de données centrale</strong>, l'asset de l'entreprise, que tous les outils alimentent.</div>
+</section>
+
+<!-- 3 · LA PROPOSITION -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>03 — La proposition</span></div>
+  <h2>Un portail Erudia, un backbone, des connecteurs</h2>
+  <div class="h-rule"></div>
+  <p class="lead">Construire <em>le portail Erudia</em> — seul point d'entrée des certifiés — adossé à une <em>base de données centrale</em> (le backbone), avec des <em>connecteurs API</em> vers les plateformes existantes : la donnée vit chez Erudia.</p>
+  <div class="grid g3" style="margin-top:30px;">
+    <div class="card accent"><h3>Une identité</h3><p>Connexion unique, magic link, 2FA — fin des pages de login éparpillées.</p></div>
+    <div class="card accent"><h3>Un écran</h3><p>Envoi, suivi, rapports, achats, ressources et communauté sans quitter le portail.</p></div>
+    <div class="card accent"><h3>Une base</h3><p>Clients, certifications, crédits, campagnes, usages — centralisés.</p></div>
+  </div>
+</section>
+
+<!-- 4 · ARCHITECTURE -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>04 — Architecture cible</span></div>
+  <h2>Le hub qui orchestre, la base qui détient</h2>
+  <div class="h-rule" style="margin-bottom:14px;"></div>
+  <div class="arch">
+    <div class="arch-tier">
+      <div class="box client"><div class="bx-t">Portail certifiés</div><div class="bx-s">React + TanStack</div></div>
+      <div class="box client"><div class="bx-t">Back-office</div><div class="bx-s">react-admin</div></div>
+    </div>
+    <div class="arch-flow">↓ &nbsp;consomment l'API&nbsp; ↓</div>
+    <div class="arch-tier">
+      <div class="box api"><div class="bx-t">API métier — NestJS · OpenAPI</div><div class="bx-s">toute écriture passe par l'API · invariants du registre de crédits</div></div>
+    </div>
+    <div class="arch-tier" style="gap:14px;">
+      <div class="box svc"><div class="bx-t">Ory Kratos</div><div class="bx-s">identité · magic link · 2FA</div></div>
+      <div class="box db"><div class="bx-t">PostgreSQL — base centrale</div><div class="bx-s">le backbone · source de vérité</div></div>
+      <div class="box svc"><div class="bx-t">Redis · BullMQ · RustFS</div><div class="bx-s">jobs/polling · stockage S3 (UE)</div></div>
+    </div>
+    <div class="arch-flow">↑ &nbsp;connecteurs API (cible / repli défini)&nbsp; ↑</div>
+    <div class="arch-tier" style="gap:10px;">
+      <div class="box conn"><div class="bx-t">Assessments 24x7</div></div>
+      <div class="box conn"><div class="bx-t">Hubu</div></div>
+      <div class="box conn"><div class="bx-t">Digiforma</div></div>
+      <div class="box conn"><div class="bx-t">WooCommerce</div></div>
+      <div class="box conn"><div class="bx-t">Pipedrive</div></div>
+      <div class="box conn"><div class="bx-t">Discourse (forum)</div></div>
+    </div>
+  </div>
+  <div class="arch-note">Les <b>outils internes Erudia (no-code)</b> émettent eux aussi vers la base, via l'API — aucune donnée enfermée. Le <b>forum</b> (Discourse) est branché en <b>SSO</b> sur l'identité.</div>
+</section>
+
+<!-- 5 · STACK -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>05 — Décisions techniques</span></div>
+  <h2>Le socle : theTribe <span style="color:var(--accent)">Station</span></h2>
+  <p class="lead" style="margin-top:6px;">Boilerplate monorepo éprouvé (<span class="num">github.com/thetribeio/station</span>) — TypeScript de bout en bout. Démarrage immédiat, dérisqué, souveraineté & RGPD <em>by design</em>.</p>
+  <div class="grid g3" style="margin-top:20px; gap:14px;">
+    <div class="card"><div class="tag">Frontend</div><p>React (+ Compiler) · TanStack Start/Router/Query · Vite · Tailwind · Radix UI · <strong>i18next (FR/EN)</strong> · orval</p></div>
+    <div class="card"><div class="tag">Backend</div><p>NestJS · MikroORM · <strong>BullMQ</strong> (jobs &amp; polling) · Zod · neverthrow · ts-pattern · OpenAPI</p></div>
+    <div class="card"><div class="tag">Données &amp; identité</div><p><strong>PostgreSQL</strong> (base centrale) · Ory Kratos (magic link, 2FA) · Redis · RustFS (S3, UE)</p></div>
+    <div class="card accent"><div class="tag">Back-office</div><p><strong>react-admin</strong> — en cours d'ajout au socle · client de l'API, invariants garantis</p></div>
+    <div class="card"><div class="tag">Infra &amp; qualité</div><p>Docker · Traefik · <strong>Terraform + Ansible</strong> (IaC) · Sentry · Biome · Vitest + Testcontainers · CI</p></div>
+    <div class="card" style="background:var(--accent-soft);border-color:#DCDEFB;"><div class="tag">Communauté</div><p><strong>Discourse</strong> (la référence open-source des forums) intégré en <strong>SSO</strong> — pas de réinvention, fil animé et modéré.</p></div>
+  </div>
+</section>
+
+<!-- 6 · STRATÉGIE DE CONNEXION -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>06 — Stratégie de connexion</span></div>
+  <h2>Trois niveaux, jamais de pari binaire</h2>
+  <div class="h-rule"></div>
+  <p class="lead" style="margin-top:0;margin-bottom:6px;">Chaque outil est branché au <em>niveau le plus haut</em> qu'il permet — avec un <em>repli garanti d'avance</em> : le niveau de secours qui tient même si l'API n'est pas au rendez-vous. Aucun lot ne dépend d'un « tout ou rien ».</p>
+  <div class="stairs">
+    <div class="stair s1"><div class="st-lv">NIVEAU 1 · REPLI MINIMUM</div><div class="st-t">Accès unifié</div><div class="st-d">Compte provisionné + redirection (SSO / lien). L'action se fait sur l'outil partenaire, mais l'accès reste unique.</div></div>
+    <div class="stair s2"><div class="st-lv">NIVEAU 2</div><div class="st-t">Données rapatriées</div><div class="st-d">Le portail lit l'outil par API : statuts, résultats et données s'affichent chez Erudia (lecture seule).</div></div>
+    <div class="stair s3"><div class="st-lv">NIVEAU 3 · CIBLE</div><div class="st-t">Orchestration</div><div class="st-d">Le portail pilote l'outil par API — créer, envoyer, récupérer — sans jamais en sortir.</div></div>
+  </div>
+  <div class="grid g3" style="gap:14px;">
+    <div class="card accent"><div class="tag">Assessments 24x7</div><p><strong>Cible N3</strong> — envoi, suivi, rapports orchestrés via l'API.<br>Profils &amp; endpoints manquants à demander aux US.<br>Repli N1 : SSO sortant (<span class="num">DashboardUrl</span>).</p></div>
+    <div class="card" style="border-left:4px solid var(--emerald)"><div class="tag" style="color:var(--emerald)">Digiforma</div><p><strong>Cible N2 + inscription en N3</strong> — formations en lecture et <strong>inscription par API</strong> (<span class="num">createRegistration</span>) ; le légal reste chez Digiforma.<br>Repli N1 : lien profond pré-authentifié.</p></div>
+    <div class="card" style="border-left:4px solid var(--amber)"><div class="tag" style="color:var(--amber)">Hubu (ICE)</div><p><strong>Cible N3</strong> — endpoints dédiés à développer par Hubu (visio du 17 juin actée).<br>Repli N1 : lien + provisioning.</p></div>
+  </div>
+  <p class="foot-note"><strong>L'iframe est écartée</strong> (UX, authentification, RGPD) — approche API-first pour garder la maîtrise de l'expérience. <strong>Phase 1</strong> : authentification 24×7 par <strong>token serveur</strong> (clé self-service), en attendant un mécanisme d'identification dédié.</p>
+</section>
+
+<!-- 7 · ZOOM API 24x7 -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>07 — Zoom : le connecteur 24×7</span></div>
+  <h2>Tout le parcours, propulsé par l'API</h2>
+  <div class="h-rule" style="margin-bottom:10px;"></div>
+  <p class="lead" style="margin-top:0;">Les endpoints sont <em>documentés et confirmés sur l'instance <span class="num">assessments24x7.fr</span></em>. Voici comment ils rendent 24×7 <strong>invisible</strong> pour le coach.</p>
+  <div class="apirail">
+    <div class="apistep">
+      <div class="as-n">1 · Provisionner</div>
+      <div class="as-t">Compte &amp; identité</div>
+      <div class="as-d">Le portail crée le répondant et mappe l'ID Erudia. Auth Basic, clé API générable en autonomie.</div>
+      <span class="mono">POST /api/register<br>→ ExternalId · DashboardUrl</span>
+    </div>
+    <div class="apistep">
+      <div class="as-n">2 · Envoyer</div>
+      <div class="as-t">Lien personnalisé</div>
+      <div class="as-d">Un lien de questionnaire prêt à l'envoi, langue et message au choix.</div>
+      <span class="mono">→ AssessmentUrl</span>
+    </div>
+    <div class="apistep">
+      <div class="as-n">3 · Être notifié</div>
+      <div class="as-t">Complétion temps réel</div>
+      <div class="as-d">Le client est renvoyé au portail dès qu'il a répondu → déclencheur de récupération. Polling en repli.</div>
+      <span class="mono">ReturnURL (retour)<br>repli : GET …/results</span>
+    </div>
+    <div class="apistep">
+      <div class="as-n">4 · Restituer</div>
+      <div class="as-t">Scores + rapport PDF</div>
+      <div class="as-d">Scores DISC &amp; Motivators (JSON) et PDF rangés dans le portail, prêts pour le coach.</div>
+      <span class="mono">GET …/results<br>→ scores · ReportUrl</span>
+    </div>
+  </div>
+  <div class="callout ok" style="margin-top:24px;"><strong>API validée par POC — live et documentée sur l'instance .fr</strong>, authentification Basic et <strong>clés générables en self-service</strong> par Erudia. <strong>Solde de crédits</strong> géré en « passerelle » côté plateforme Erudia.</div>
+</section>
+
+<!-- 8 · BACK-OFFICE & PILOTAGE -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>08 — Back-office &amp; pilotage</span></div>
+  <h2>Écrire et lire — chacun son rôle</h2>
+  <div class="h-rule"></div>
+  <div class="grid g2" style="gap:14px; margin-bottom:20px;">
+    <div class="card accent"><div class="tag">Écrire</div><h3>react-admin</h3><p>Commandes, crédits, certifiés, sous-comptes. Client de l'API → invariants du registre de crédits garantis.</p></div>
+    <div class="card" style="border-left:4px solid var(--emerald)"><div class="tag" style="color:var(--emerald)">Lire</div><h3>Metabase</h3><p>Reporting &amp; segmentation sur réplica lecture seule. Cohortes, PLG, soldes dormants.</p></div>
+  </div>
+  <div class="callout idx"><strong>La règle d'or (ADR) :</strong> toute écriture passe par l'API métier, toute lecture analytique par un réplica. C'est ce qui protège le registre de crédits, quoi qu'il arrive.</div>
+</section>
+
+<!-- 9 · LA DÉMARCHE -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>09 — La démarche</span></div>
+  <h2>On ne part pas de zéro</h2>
+  <div class="h-rule"></div>
+  <p class="lead" style="margin-top:0;margin-bottom:18px;">Un <em>POC</em> a déjà validé le connecteur 24×7 sur l'instance .fr. L'<em>étape 0</em> lève le dernier inconnu — <em>Hubu</em> — et resserre le chiffrage, <strong>avant tout engagement</strong>.</p>
+  <div class="kv2">
+    <div class="kvp known">
+      <h3>✓ Déjà établi (docs officielles)</h3>
+      <ul>
+        <li><strong>24×7</strong> : API live <strong>validée par un POC</strong> (register → résultats OK, clé self-service, scores DISC &amp; Motivators, PDF) ; solde non exposé → <strong>géré en passerelle</strong></li>
+        <li><strong>Digiforma</strong> : API GraphQL confirmée — <strong>lecture + écriture</strong> ; inscription d'apprenant via la mutation <span class="num">createRegistration</span>, token self-service</li>
+        <li><strong>Boutique, Pipedrive, migration</strong> : API standard éprouvées</li>
+      </ul>
+    </div>
+    <div class="kvp unknown">
+      <h3>? À lever en étape 0</h3>
+      <ul>
+        <li><strong>Hubu</strong> : endpoints <strong>en cours de définition</strong> avec l'éditeur — délai de livraison &amp; co-financement à caler</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout ok" style="margin-top:18px;"><strong>Le cœur ne dépend d'aucune API tierce :</strong> portail, identité unique, registre de crédits, boutique, ressources, agenda et migration sont livrés quoi qu'il arrive. Le seul aléa — <strong>Hubu</strong> — est optionnel et couvert par son repli N1.</div>
+</section>
+
+<!-- 10 · ROADMAP -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>10 — Roadmap</span></div>
+  <h2>Dérisquage l'été, mises en service Q4 2026</h2>
+  <div class="h-rule" style="margin-bottom:18px;"></div>
+  <div class="road">
+    <div class="rrow rhead">
+      <div></div><div>Juin</div><div>Juil.</div><div>Août</div><div>Sept.</div><div>Oct.</div><div>Nov.</div><div>Déc.</div>
+    </div>
+    <div class="rrow">
+      <div class="rlbl">Jalons</div>
+      <div class="ms" style="grid-column:2"><div class="di"></div><small>17/06 visio Hubu</small></div>
+      <div class="ms" style="grid-column:3"><div class="di"></div><small>10/07 remise</small></div>
+      <div class="ms" style="grid-column:6"><div class="di"></div><small>MES</small></div>
+      <div class="ms" style="grid-column:7"><div class="di"></div><small>MES</small></div>
+      <div class="ms" style="grid-column:8"><div class="di"></div><small>MES</small></div>
+    </div>
+    <div class="rrow">
+      <div class="rlbl">Étape 0 <small>dérisquage</small></div>
+      <div class="bar amber" style="grid-column:2/4">Hubu · chiffrage</div>
+    </div>
+    <div class="rrow">
+      <div class="rlbl">Lot 0–1 <small>fondations + cœur</small></div>
+      <div class="bar core" style="grid-column:5/7">Station · Kratos · portail · 24x7</div>
+    </div>
+    <div class="rrow">
+      <div class="rlbl">Lot 2 <small>crédits</small></div>
+      <div class="bar core" style="grid-column:6/7">Registre crédits</div>
+    </div>
+    <div class="rrow">
+      <div class="rlbl">Lot 3–4 <small>ressources · connecteurs</small></div>
+      <div class="bar opt" style="grid-column:6/8">Options · arbitrage budget</div>
+    </div>
+    <div class="rrow">
+      <div class="rlbl">Lot 5 <small>migration</small></div>
+      <div class="bar mig" style="grid-column:7/9">Bascule par vagues</div>
+    </div>
+  </div>
+  <p class="road-note">Méthode Agile/Scrum · sprints de 2 semaines · go/no-go par lot · démo à chaque sprint. Développement dès septembre.</p>
+</section>
+
+<!-- 11 · LES LOTS -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>11 — Les lots</span></div>
+  <h2>Sept lots, activables indépendamment</h2>
+  <div class="h-rule"></div>
+  <div class="grid g3" style="gap:14px;">
+    <div class="card"><div class="tag">Lot 0 · Fondations</div><p>Monorepo, CI/CD, Kratos, hébergement UE, socle UI</p><p style="margin-top:8px;color:var(--accent);font-weight:700;" class="num">10–14 JH · 8–12 k€</p></div>
+    <div class="card accent"><div class="tag">Lot 1 · Cœur du portail</div><p>Connecteur 24x7, wizard d'envoi, suivi, rapports, dashboard</p><p style="margin-top:8px;color:var(--accent);font-weight:700;" class="num">22–28 JH · 18–23 k€</p></div>
+    <div class="card accent"><div class="tag">Lot 2 · Crédits &amp; commandes</div><p>Registre de crédits, webhook boutique, back-office hors boutique</p><p style="margin-top:8px;color:var(--accent);font-weight:700;" class="num">10–14 JH · 8–12 k€</p></div>
+    <div class="card opt"><div class="tag">Lot 3 · Ressources &amp; agenda</div><p>Bibliothèque à droits, recherche, webinaires</p><p style="margin-top:8px;color:var(--muted);font-weight:700;" class="num">8–11 JH · 7–9 k€</p></div>
+    <div class="card opt"><div class="tag">Lot 4 · Connecteurs</div><p>Digiforma (inscription), Pipedrive, Hubu (endpoints en cours côté éditeur)</p><p style="margin-top:8px;color:var(--muted);font-weight:700;" class="num">8–13 JH · 7–11 k€</p></div>
+    <div class="card accent"><div class="tag">Lot 5 · Migration &amp; bascule</div><p>Import comptes, invitations magic link, onboarding</p><p style="margin-top:8px;color:var(--accent);font-weight:700;" class="num">8–11 JH · 7–9 k€</p></div>
+    <div class="card opt"><div class="tag">Lot 6 · Forum &amp; communauté</div><p><strong>Discourse</strong> (référence OSS) en SSO : catégories, modération, fil animé</p><p style="margin-top:8px;color:var(--muted);font-weight:700;" class="num">6–10 JH · 5–8 k€</p></div>
+  </div>
+  <div class="lots-legend">
+    <span><span class="swatch" style="background:var(--accent)"></span><b>Cœur</b> — lots 0·1·2·5 (la promesse centrale)</span>
+    <span><span class="swatch" style="background:#fff;border:1px dashed var(--muted)"></span><b>Optionnels</b> — lots 3·4·6, arbitrés au budget</span>
+  </div>
+</section>
+
+<!-- 12 · CHIFFRAGE -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>12 — Chiffrage</span></div>
+  <h2>Le cœur dans l'enveloppe, les options arbitrées</h2>
+  <div class="h-rule" style="margin-bottom:6px;"></div>
+  <div class="costchart">
+    <div class="cc-plot">
+      <div class="cc-rows">
+        <div class="cc-band" style="left:50%; width:40%;"><span>Enveloppe validée · 50–90 k€</span></div>
+        <div class="cc-row">
+          <div class="cc-cap"><span>Périmètre cœur <span style="color:var(--muted);font-weight:500;">— lots 0·1·2·5</span></span><span class="v">48–64 k€</span></div>
+          <div class="cc-track"><div class="cc-bar core" style="left:48%; width:16%;">58–77 JH</div></div>
+        </div>
+        <div class="cc-row">
+          <div class="cc-cap"><span>Périmètre complet <span style="color:var(--muted);font-weight:500;">— 7 lots, forum inclus</span></span><span class="v" style="color:var(--accent2)">69–97 k€</span></div>
+          <div class="cc-track"><div class="cc-bar full" style="left:69%; width:28%;">83–116 JH</div></div>
+        </div>
+      </div>
+      <div class="cc-axis">
+        <span style="left:0%">0</span><span style="left:25%">25</span><span style="left:50%">50</span><span style="left:75%">75</span><span style="left:100%">100 k€</span>
+      </div>
+    </div>
+  </div>
+  <p class="foot-note" style="margin-top:30px;">Hypothèses : TJM 833 € (ajustable) · pilotage &amp; QA (+15 %) inclus · fourchettes à <strong>resserrer après l'étape 0</strong>. Le <strong>cœur</strong> reste dans l'enveloppe ; les <strong>options (lots 3·4·6, dont le forum Discourse +5–8 k€)</strong> poussent le haut au-delà de 90 k€ → <strong>arbitrage budgétaire (cœur vs complet)</strong>. Hébergement Discourse = coût d'infra (auto-hébergé, sans licence), hors dev.</p>
+</section>
+
+<!-- 13 · PARTENAIRES -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>13 — Partenaires externes</span></div>
+  <h2>Ce que nous demandons aux éditeurs</h2>
+  <div class="h-rule"></div>
+  <div class="grid g3" style="gap:14px;">
+    <div class="card accent"><div class="tag">Assessments 24x7</div><p>Test bout-en-bout (clé self-service) · <strong>profils manquants &amp; endpoints additionnels</strong> · endpoint <strong>solde de crédits</strong> · versionnement/préavis · sous-comptes · DPA · <strong>qui finance quoi</strong></p></div>
+    <div class="card" style="border-left:4px solid var(--amber)"><div class="tag" style="color:var(--amber)">Hubu (ICE)</div><p>Développer les endpoints (spécification en cours) : organisations/équipes, envoi, résultats + <strong>indice de cohésion</strong>, rapports, webhooks de complétion · crédits (option) · idempotence · <strong>co-financement</strong></p></div>
+    <div class="card" style="border-left:4px solid var(--emerald)"><div class="tag" style="color:var(--emerald)">Digiforma</div><p><strong>Rien à demander</strong> — API GraphQL self-service : lecture + inscription (<span class="num">createRegistration</span>) confirmées. Action interne : générer le token + un test rapide (une requête + une inscription d'essai).</p></div>
+  </div>
+</section>
+
+<!-- 14 · RISQUES -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>14 — Risques</span></div>
+  <h2>Risques résiduels : identifiés et couverts</h2>
+  <div class="h-rule"></div>
+  <p class="lead" style="margin-top:0;margin-bottom:20px;">Les deux inconnues techniques majeures sont <em>levées</em> — comportement <em>24×7 prouvé par POC</em>, écriture <em>Digiforma confirmée</em>. Restent des risques connus, chacun avec sa parade.</p>
+  <div class="grid g2" style="gap:14px;">
+    <div class="card"><div class="tag" style="color:var(--coral)">Évolution des API tierces</div><p>Versionnement contractuel &amp; préavis · tests automatisés du connecteur · monitoring · repli N1 chiffré.</p></div>
+    <div class="card"><div class="tag" style="color:var(--coral)">Livraison des endpoints Hubu</div><p>Engagement acté, endpoints en cours · lot optionnel · repli N1 (lien + provisioning) · co-financement.</p></div>
+    <div class="card"><div class="tag" style="color:var(--coral)">Adoption des certifiés</div><p>Migration par vagues · magic link sans friction · onboarding guidé J+0 / J+1 / J+7.</p></div>
+    <div class="card"><div class="tag" style="color:var(--coral)">Conformité RGPD (partenaires US)</div><p>DPA + transfert encadré · données chez Erudia · hébergement UE · accès via la passerelle.</p></div>
+  </div>
+</section>
+
+<!-- 15 · GOUVERNANCE -->
+<section>
+  <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>15 — Organisation</span></div>
+  <h2>Gouvernance &amp; staffing</h2>
+  <div class="h-rule"></div>
+  <div class="grid g2" style="gap:16px;">
+    <div class="card"><h3>Méthode</h3><p>Agile/Scrum · sprints de 2 semaines · démo &amp; point d'avancement à chaque sprint · go/no-go par lot.</p></div>
+    <div class="card"><h3>Côté Erudia</h3><p><strong>PO à désigner</strong> (~0,5–1 j/sem.) · Alain &amp; Nathalie (back-office) · Éric (parcours certification) · jeux no-code en interne.</p></div>
+    <div class="card"><h3>Côté theTribe</h3><p>Lead dev + équipe Station · appui <strong>PMO part-time</strong> (suivi scrums, vision techno) à l'étude.</p></div>
+    <div class="card"><h3>Interface clé</h3><p>Les développements internes (no-code) <strong>alimentent la base centrale</strong> via l'API exposée — point d'intégration défini au cadrage.</p></div>
+  </div>
+</section>
+
+<!-- 16 · PROCHAINES ÉTAPES -->
+<section data-background-color="#14152A">
+  <div class="title-wrap" style="justify-content:flex-start; padding-top:10px;">
+    <div class="title-eyebrow" style="color:#A5A0FF;">16 — Prochaines étapes</div>
+    <h1 style="font-size:44px;">Cap sur le <span class="accent">10 juillet</span></h1>
+    <p style="color:#C9CBE8; font-size:18px; margin-top:18px; max-width:1000px; line-height:1.5;">Le dérisquage technique est fait — <strong style="color:#fff">POC 24×7 validé</strong>, <strong style="color:#fff">API Digiforma confirmée</strong>. Dernière ligne droite avant la remise.</p>
+    <div style="margin-top:26px; display:grid; grid-template-columns:1fr 1fr; gap:18px 40px; max-width:1040px;">
+      <div style="display:flex;gap:14px;align-items:flex-start;"><span style="color:#A5A0FF;font-weight:800;font-size:22px;">1</span><p style="color:#D9DAF0;font-size:18px;line-height:1.4;"><strong style="color:#fff">Hubu —</strong> finaliser la définition des endpoints (en cours) · délai de livraison · co-financement.</p></div>
+      <div style="display:flex;gap:14px;align-items:flex-start;"><span style="color:#A5A0FF;font-weight:800;font-size:22px;">2</span><p style="color:#D9DAF0;font-size:18px;line-height:1.4;"><strong style="color:#fff">Digiforma —</strong> activer le token API et valider par un test rapide.</p></div>
+      <div style="display:flex;gap:14px;align-items:flex-start;"><span style="color:#A5A0FF;font-weight:800;font-size:22px;">3</span><p style="color:#D9DAF0;font-size:18px;line-height:1.4;"><strong style="color:#fff">Début juillet —</strong> chiffrage consolidé · arbitrage cœur vs complet · <strong style="color:#fff">remise finale le 10 juillet</strong>.</p></div>
+      <div style="display:flex;gap:14px;align-items:flex-start;"><span style="color:#A5A0FF;font-weight:800;font-size:22px;">4</span><p style="color:#D9DAF0;font-size:18px;line-height:1.4;"><strong style="color:#fff">Septembre —</strong> démarrage du lot 0 (fondations).</p></div>
+    </div>
+    <div style="margin-top:40px; border-top:1px solid rgba(165,160,255,.25); padding-top:18px; color:#8E92C4; font-size:15px;">theTribe × Erudia — Proposition technique · juin 2026 · document d'appui : Étude technique « Espace connecté »</div>
+  </div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0.045,
+    minScale: 0.2, maxScale: 2.0,
+    hash: true, slideNumber: 'c/t', controls: true, progress: true,
+    transition: 'slide', transitionSpeed: 'fast',
+    center: true
+  });
+</script>
+</body>
+</html>
