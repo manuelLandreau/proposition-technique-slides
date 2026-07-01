@@ -201,12 +201,12 @@
   <h2>Le constat, en bref</h2>
   <div class="h-rule"></div>
   <div class="grid g4" style="margin-bottom:24px;">
-    <div class="card"><div class="tag" style="color:var(--coral)">Fragmentation</div><p>4–5 plateformes, identifiants multiples, parcours dispersés</p></div>
+    <div class="card"><div class="tag" style="color:var(--coral)">Fragmentation</div><p>5 plateformes, identifiants multiples, parcours dispersés</p></div>
     <div class="card"><div class="tag" style="color:var(--coral)">Tout manuel</div><p>Comptes 24x7 et crédits à la main, 40 % des commandes hors boutique</p></div>
-    <div class="card"><div class="tag" style="color:var(--coral)">Pas de base</div><p>Donnée enfermée dans chaque outil, aucun pilotage central</p></div>
-    <div class="card"><div class="tag" style="color:var(--coral)">Conformité</div><p>Exigences RGPD des grands comptes, identifiants envoyés en clair</p></div>
+    <div class="card"><div class="tag" style="color:var(--coral)">Pas de base</div><p>Pas de base de données commune : donnée enfermée dans chaque outil, aucun pilotage central</p></div>
+    <div class="card"><div class="tag" style="color:var(--coral)">Conformité</div><p>Non-conformité RGPD : identifiants envoyés en clair, exigences des grands comptes non tenues</p></div>
   </div>
-  <div class="callout idx"><strong>La cible :</strong> un point d'entrée unique — une identité, une page d'accueil personnalisée — adossé à une <strong>base de données centrale</strong>, l'asset de l'entreprise, que tous les outils alimentent.</div>
+  <div class="callout idx"><strong>Nous allons construire un point d'entrée unique</strong> — une identité, une page d'accueil personnalisée — adossé à une <strong>base de données centrale</strong>, l'asset de l'entreprise, que tous les outils alimentent.</div>
 </section>
 
 <!-- 3 · LA PROPOSITION -->
@@ -265,40 +265,54 @@
     <div class="stair s2"><div class="st-lv">Mieux</div><div class="st-t">Données rapatriées</div><div class="st-d">Les informations de l'outil s'affichent directement dans le portail.</div></div>
     <div class="stair s3"><div class="st-lv">L'idéal</div><div class="st-t">Tout depuis le portail</div><div class="st-d">L'action se fait sans jamais quitter Erudia — l'outil devient invisible.</div></div>
   </div>
-  <div class="grid g3" style="gap:14px;">
-    <div class="card accent"><div class="tag">Assessments 24x7</div><p>Idéalement <strong>tout depuis le portail</strong> (déjà prouvé). En secours : accès direct sécurisé.</p></div>
-    <div class="card" style="border-left:4px solid var(--emerald)"><div class="tag" style="color:var(--emerald)">Digiforma</div><p>Formations <strong>affichées dans le portail</strong> + inscriptions automatisables. Le légal reste chez Digiforma.</p></div>
-    <div class="card" style="border-left:4px solid var(--amber)"><div class="tag" style="color:var(--amber)">Hubu (ICE)</div><p>Selon ce que leur équipe développe. En secours : <strong>accès simplifié</strong> immédiat.</p></div>
-  </div>
+  <p style="font-size:16px;color:var(--ink-soft);margin:2px 0 8px;">Où en est chaque outil — <strong>la couleur reprend le niveau ci-dessus</strong> :</p>
+  <table class="t" style="font-size:15px;">
+    <tr><th style="width:200px;">Outil</th><th style="width:320px;">Niveau visé</th><th>Détail &amp; calendrier</th></tr>
+    <tr>
+      <td><strong>Assessments 24×7</strong></td>
+      <td><span class="chip n3">Tout depuis le portail</span></td>
+      <td>Déjà prouvé par le prototype. Repli : accès direct sécurisé.</td>
+    </tr>
+    <tr>
+      <td><strong>Digiforma</strong></td>
+      <td><span class="chip n2">Données rapatriées</span></td>
+      <td>Confirmé — formations affichées + inscriptions automatisables. Le légal reste chez Digiforma.</td>
+    </tr>
+    <tr>
+      <td><strong>Hubu (ICE)</strong></td>
+      <td><span class="chip n1">Accès simplifié</span> <span style="color:var(--muted);font-weight:800;">→</span> <span class="chip n2">Données rapatriées</span></td>
+      <td>Accès simplifié jusqu'à décembre, puis données rapatriées en 2027 (selon le développement de leur équipe).</td>
+    </tr>
+  </table>
   <p class="foot-note"><strong>Pas d'iframe</strong> (mauvaise expérience, problèmes de connexion et de confidentialité) : on garde la maîtrise de l'expérience sur le portail Erudia.</p>
 </section>
 
 <!-- 6 · ZOOM API 24x7 -->
 <section>
   <div class="kicker"><span class="brand">theTribe × Erudia</span><span class="dot"></span><span>06 — Zoom : le connecteur 24×7</span></div>
-  <h2>Tout le parcours, sans quitter le portail</h2>
+  <h2>Tout le parcours, sans quitter la plateforme</h2>
   <div class="h-rule" style="margin-bottom:10px;"></div>
   <p class="lead" style="margin-top:0;">Concrètement, voici comment se passe l'envoi d'un questionnaire — l'outil 24×7 devient <strong>invisible</strong> pour le coach.</p>
   <div class="apirail">
     <div class="apistep">
       <div class="as-n">1 · Provisionner</div>
       <div class="as-t">Compte créé tout seul</div>
-      <div class="as-d">Le portail crée automatiquement le compte du répondant — plus de saisie manuelle.</div>
+      <div class="as-d">La plateforme crée automatiquement le compte du répondant — plus de saisie manuelle.</div>
     </div>
     <div class="apistep">
       <div class="as-n">2 · Envoyer</div>
-      <div class="as-t">Lien personnalisé</div>
-      <div class="as-d">Un lien de questionnaire prêt à envoyer, avec la langue et le message au choix.</div>
+      <div class="as-t">Lien du questionnaire</div>
+      <div class="as-d">Prêt à envoyer, avec la langue et le message au choix.</div>
     </div>
     <div class="apistep">
       <div class="as-n">3 · Être notifié</div>
-      <div class="as-t">Réponse en temps réel</div>
-      <div class="as-d">Dès que la personne a répondu, le portail le sait et récupère les résultats.</div>
+      <div class="as-t">Réponse reçue</div>
+      <div class="as-d">Dès que la personne répond, la plateforme récupère les résultats. Pour un vrai temps réel, il faut que 24×7 envoie un signal automatique à la plateforme.</div>
     </div>
     <div class="apistep">
       <div class="as-n">4 · Restituer</div>
       <div class="as-t">Scores + rapport PDF</div>
-      <div class="as-d">Scores et rapport PDF rangés dans le portail, prêts pour le coach.</div>
+      <div class="as-d">Scores et rapport PDF rangés dans la plateforme, prêts pour le coach.</div>
     </div>
   </div>
   <div class="callout ok" style="margin-top:24px;">Un prototype envoie un questionnaire et récupère les résultats, en vrai. Le solde de crédits est géré côté Erudia. &nbsp;▶ <strong>Démo en ligne : <a href="https://erudia-poc.vercel.app/" target="_blank" rel="noreferrer" style="color:var(--accent2);">erudia-poc.vercel.app</a></strong></div>
@@ -380,7 +394,7 @@
       <div class="bar mig" style="grid-column:7/9">Bascule par vagues</div>
     </div>
   </div>
-  <p class="road-note">Méthode Agile/Scrum · sprints de 2 semaines · go/no-go par lot · démo à chaque sprint. Développement dès septembre.</p>
+  <p class="road-note">Méthode Agile/Scrum · sprints de 2 semaines · go/no-go par lot · démo à chaque sprint. Développement dès septembre. <strong>MES = mise en service.</strong></p>
 </section>
 
 <!-- 10 · LES LOTS -->
